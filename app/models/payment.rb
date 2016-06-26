@@ -5,7 +5,7 @@ class Payment < ActiveRecord::Base
   validates :amount, numericality: true
   validates :amount, presence: true
 
-  before_create :save_payment_date
+  before_save :save_payment_date
 
   def amount=(val)
     write_attribute :amount, val.to_f if numeric?(val)

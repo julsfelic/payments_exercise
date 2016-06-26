@@ -28,7 +28,7 @@ RSpec.describe 'POST /api/v1/loans/:load_id/payments', type: :request do
 
       parsed_response = JSON.parse(response.body)
 
-      expect(parsed_response.errors[0]).to eq 'Payment exceeds the outstanding balance'
+      expect(parsed_response['errors'][0]).to eq 'Amount cannot exceed outstanding loan balance'
     end
   end
 end

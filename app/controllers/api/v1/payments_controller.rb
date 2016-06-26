@@ -1,7 +1,13 @@
 class Api::V1::PaymentsController < ApiController
   def create
     loan = Loan.find(params[:loan_id])
-    respond_with loan.payments.create(payment_params), location: nil
+    payment = loan.payments.new(payment_params)
+
+    if loan.payment_under_balance?(payment) && payment.save
+      respond_with payment, location: nil
+    else
+      render json: { errors: payment.errors.full_messages }, status: :bad_request 
+    end
   end
 
   private
