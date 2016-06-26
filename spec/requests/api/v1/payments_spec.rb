@@ -70,3 +70,22 @@ RSpec.describe 'GET /api/v1/loans/:loan_id/payments' do
     expect(parsed_response[1]['payment_date']).to eq second_payment.payment_date
   end
 end
+
+RSpec.describe 'GET /api/v1/loans/:loan_id/payments/:id' do
+  let(:loan) { Loan.create(funded_amount: 10_000.0) }
+
+  it 'shows all payments for the specified loan' do
+    loan.payments.create(amount: 2000.0)
+    second_payment = loan.payments.create(amount: 4000.0)
+
+    get "/api/v1/loans/#{loan.id}/payments/#{second_payment.id}"
+
+    expect(response.status).to eq 200
+
+    parsed_response = JSON.parse(response.body)
+
+    expect(parsed_response['id']).to eq second_payment.id
+    expect(parsed_response['amount']).to eq second_payment.amount.to_s
+    expect(parsed_response['payment_date']).to eq second_payment.payment_date
+  end
+end
