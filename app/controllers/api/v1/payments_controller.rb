@@ -3,7 +3,7 @@ class Api::V1::PaymentsController < ApiController
     loan = Loan.find(params[:loan_id])
     payment = loan.payments.new(payment_params)
 
-    if payment.save && loan.payment_under_balance?(payment)
+    if loan.payment_under_balance?(payment) && payment.save
       respond_with payment, location: nil
     else
       render json: { errors: payment.errors.full_messages }, status: :bad_request
