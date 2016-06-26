@@ -3,6 +3,11 @@ class Api::V1::PaymentsController < ApiController
     respond_with Loan.find(params[:loan_id]).payments
   end
 
+  def show
+    payments = Loan.find(params[:loan_id]).payments
+    respond_with payments.find(params[:id])
+  end
+
   def create
     loan = Loan.find(params[:loan_id])
     payment = loan.payments.new(payment_params)

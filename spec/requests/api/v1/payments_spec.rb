@@ -78,7 +78,7 @@ RSpec.describe 'GET /api/v1/loans/:loan_id/payments/:id' do
     loan.payments.create(amount: 2000.0)
     second_payment = loan.payments.create(amount: 4000.0)
 
-    get "/api/v1/loans/#{loan.id}/payments/{second_payment.id}"
+    get "/api/v1/loans/#{loan.id}/payments/#{second_payment.id}"
 
     expect(response.status).to eq 200
 
