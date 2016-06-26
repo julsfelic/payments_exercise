@@ -17,10 +17,10 @@ RSpec.describe 'GET /loans', type: :request do
     parsed_response = JSON.parse(response.body)
 
     expect(parsed_response[0]['id']).to eq first_loan.id
-    expect(parsed_response[0]['funded_amount']).to eq first_loan.funded_amount
-    expect(parsed_response[0]['outstanding_balance']).to eq first_loan_balance
+    expect(parsed_response[0]['funded_amount']).to eq first_loan.funded_amount.to_s
+    expect(parsed_response[0]['outstanding_balance']).to eq first_loan_balance.to_s
     expect(parsed_response[1]['id']).to eq second_loan.id
-    expect(parsed_response[1]['funded_amount']).to eq second_loan.funded_amount
-    expect(parsed_response[1]['outstanding_balance']).to eq second_loan_balance
+    expect(parsed_response[1]['funded_amount']).to eq second_loan.funded_amount.to_s
+    expect(parsed_response[1]['outstanding_balance']).to eq second_loan_balance.to_s
   end
 end
