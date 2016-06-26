@@ -1,10 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe 'POST /api/v1/loans/:load_id/payments', type: :request do
+  let(:loan) { Loan.create(funded_amount: 10_000.00) }
+
   context 'with valid data' do
     it 'creates a payment record for the specified loan' do
-      loan = Loan.create(funded_amount: 10_000.00)
-
       post "/api/v1/loans/#{loan.id}/payments", payment: { amount: 5000.00 }
 
       expect(response.status).to eq 201
@@ -20,8 +20,6 @@ RSpec.describe 'POST /api/v1/loans/:load_id/payments', type: :request do
 
   context 'with invalid data' do
     it 'should return validation errors' do
-      loan = Loan.create(funded_amount: 10_000.00)
-
       post "/api/v1/loans/#{loan.id}/payments", payment: { amount: 'jf' }
 
       expect(response.status).to eq 400
@@ -40,8 +38,6 @@ RSpec.describe 'POST /api/v1/loans/:load_id/payments', type: :request do
 
   context 'when the payment exceeds the outstanding balance of a loan' do
     it 'should return a error message' do
-      loan = Loan.create(funded_amount: 10_000.00)
-
       post "/api/v1/loans/#{loan.id}/payments", payment: { amount: 12_000.00 }
 
       expect(response.status).to eq 400
