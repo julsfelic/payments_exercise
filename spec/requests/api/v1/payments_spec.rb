@@ -17,4 +17,18 @@ RSpec.describe 'POST /api/v1/loans/:load_id/payments', type: :request do
       expect(parsed_response['payment_date']).to eq payment.payment_date
     end
   end
+
+  context 'when the payment exceeds the outstanding balance of a loan' do
+    it 'should return a error message' do
+      loan = Loan.create(funded_amount: 10_000.00)
+
+      post "/api/v1/loans/#{loan.id}/payments", payment: { amount: 12_000.00 }
+
+      expect(response.status).to eq 400
+
+      parsed_response = JSON.parse(response.body)
+
+      expect(parsed_response.errors[0]).to eq 'Payment exceeds the outstanding balance'
+    end
+  end
 end
