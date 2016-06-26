@@ -12,4 +12,10 @@ RSpec.describe Payment, type: :model do
 
     expect(payment.amount).to eq 10_000.00
   end
+
+  it 'should have a human readable payment date upon creation' do
+    payment = Payment.create(amount: '10000.00')
+
+    expect(payment.payment_date).to eq 'June 25, 2016'
+  end
 end

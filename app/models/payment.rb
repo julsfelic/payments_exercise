@@ -5,6 +5,8 @@ class Payment < ActiveRecord::Base
   validates :amount, numericality: true
   validates :amount, presence: true
 
+  before_create :save_payment_date
+
   def amount=(val)
     write_attribute :amount, val.to_f if numeric?(val)
   end
@@ -15,5 +17,9 @@ class Payment < ActiveRecord::Base
     !!Kernel.Float(val)
   rescue TypeError, ArgumentError
     false
+  end
+
+  def save_payment_date
+    write_attribute :payment_date, Time.now.strftime('%B %d, %Y')
   end
 end
