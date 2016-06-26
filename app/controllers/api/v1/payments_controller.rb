@@ -1,4 +1,8 @@
 class Api::V1::PaymentsController < ApiController
+  def index
+    respond_with Loan.find(params[:loan_id]).payments
+  end
+
   def create
     loan = Loan.find(params[:loan_id])
     payment = loan.payments.new(payment_params)
