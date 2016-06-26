@@ -6,7 +6,7 @@ class Loan < ActiveRecord::Base
   end
 
   def payment_under_balance?(payment)
-    if payment.amount > outstanding_balance
+    if payment.amount.nil? || payment.amount > outstanding_balance
       payment.errors.add(:amount, 'cannot exceed outstanding loan balance')
       return false
     end
