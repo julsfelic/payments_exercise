@@ -24,3 +24,20 @@ RSpec.describe 'GET /loans', type: :request do
     expect(parsed_response[1]['outstanding_balance']).to eq second_loan_balance.to_s
   end
 end
+
+RSpec.describe 'GET /loans/:id', type: :request do
+  it 'exposes outstanding balance for a specific loan' do
+    first_loan_payment = first_loan.payments.create(amount: 2000.0)
+    first_loan_balance = first_loan.funded_amount - first_loan_payment.amount
+
+    get "/loans/#{first_loan.id}"
+
+    expect(response.status).to eq 200
+
+    parsed_response = JSON.parse(response.body)
+
+    expect(parsed_response['id']).to eq first_loan.id
+    expect(parsed_response['funded_amount']).to eq first_loan.funded_amount.to_s
+    expect(parsed_response['outstanding_balance']).to eq first_loan_balance.to_s
+  end
+end
